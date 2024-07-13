@@ -1,8 +1,16 @@
 import Image from 'next/image'
 import React from 'react'
 import AuthButtons from './_components/AuthButtons'
+import { getCurrentUser } from '@/lib/actions/auth'
+import { redirect } from 'next/navigation'
 
-const AuthPage = () => {
+const AuthPage = async () => {
+  const { authenticated } = await getCurrentUser()
+  
+  if (authenticated) {
+    redirect('/')
+  }
+  
   return (
     <div className='flex h-screen w-full'>
       <div className='relative flex flex-1 items-center justify-center overflow-hidden bg-[#651c2b] dark:bg-[#651c2b55]'>

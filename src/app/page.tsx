@@ -1,12 +1,18 @@
 import { cookies } from "next/headers";
 import DottedBg from "./_components/DottedBg";
 import PreferencesTab from "./_components/PreferencesTab";
-import dynamic from "next/dynamic";
 import ChatLayout from "./_components/ChatLayout";
+import { getCurrentUser } from "@/lib/actions/auth";
+import { redirect } from "next/navigation";
 
-// const ChatLayout = dynamic(() => import("./_components/ChatLayout"), { ssr: true });
 
-export default function Home() {
+export default async function Home() {
+  const { authenticated } = await getCurrentUser()
+  
+  if (!authenticated) {
+    redirect('/auth')
+  }
+  
   const layout = cookies().get('react-resizable-panels:layout')
   const collapsed = cookies().get('react-resizable-panels:collapse')
   const defaultLayout = layout ? JSON.parse(layout.value) : undefined

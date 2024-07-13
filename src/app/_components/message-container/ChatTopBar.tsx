@@ -1,24 +1,25 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { USERS } from '@/db/dummy'
+import useSelectedUser from '@/hooks/useSelectedUser'
 import { InfoIcon, XIcon } from 'lucide-react'
 import React from 'react'
 
 const ChatTopBar = () => {
-    const selectedUser = USERS[0]
-    
+    const { selectedUser, setSelectedUser } = useSelectedUser()
+
     return (
         <header className='flex h-20 w-full items-center justify-between border-b p-4'>
             <div className='flex items-center gap-2'>
                 <Avatar>
-                    <AvatarImage src={selectedUser.image || '/user-placeholder.png'} alt={selectedUser.name} className='size-10 object-cover' />
-                    <AvatarFallback>{selectedUser.name[0]}</AvatarFallback>
+                    <AvatarImage src={selectedUser?.image || '/user-placeholder.png'} alt={selectedUser?.name} className='size-10 object-cover' />
+                    <AvatarFallback>{selectedUser?.name[0]}</AvatarFallback>
                 </Avatar>
-                <span className='font-medium'>{selectedUser.name}</span>
+                <span className='font-medium'>{selectedUser?.name}</span>
             </div>
 
             <div className='flex gap-2'>
                 <InfoIcon className='cursor-pointer text-muted-foreground hover:text-primary' />
-                <XIcon className='cursor-pointer text-muted-foreground hover:text-primary' />
+                <XIcon onClick={() => setSelectedUser(null)} className='cursor-pointer text-muted-foreground hover:text-primary' />
             </div>
         </header>
     )

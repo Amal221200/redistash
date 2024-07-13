@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react'
 import Sidebar from './Sidebar';
 import MessageContainer from './message-container';
+import useSelectedUser from '@/hooks/useSelectedUser';
 
 interface ChatLayoutProps {
     defaultLayout: number[] | undefined,
@@ -12,7 +13,8 @@ interface ChatLayoutProps {
 const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed }: ChatLayoutProps) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-
+    const { selectedUser } = useSelectedUser()
+    
     useEffect(() => {
         const chechScreenWidth = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -41,13 +43,16 @@ const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed }: ChatLayout
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={defaultLayout[1]} minSize={30} >
-                {/* <div className='flex h-full w-full items-center justify-center px-10'>
-                    <div className='flex flex-col items-center justify-center gap-4'>
-                        <img src="/logo.png" alt="logo" className='lg:1/2 w-full md:w-2/3' />
-                        <p className='text-center text-muted-foreground'>Click on a chat to view the messages</p>
-                    </div>
-                </div> */}
-                <MessageContainer />
+                {
+                    selectedUser ?
+                        <MessageContainer key={selectedUser.id} /> :
+                        <div className='flex h-full w-full items-center justify-center px-10'>
+                            <div className='flex flex-col items-center justify-center gap-4'>
+                                <img src="/logo.png" alt="logo" className='lg:1/2 w-full md:w-2/3' />
+                                <p className='text-center text-muted-foreground'>Click on a chat to view the messages</p>
+                            </div>
+                        </div>
+                }
             </ResizablePanel>
         </ResizablePanelGroup>
     )
