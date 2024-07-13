@@ -19,7 +19,7 @@ const AuthPage = () => {
           <AuthButtons />
         </div>
       </div>
-      <div className='relative hidden flex-1 items-center justify-center overflow-hidden md:flex'>
+      <div className='bg-noise relative hidden flex-1 items-center justify-center overflow-hidden md:flex'>
         <Image src={'/hero-right.png'} alt='hero image' fill className='pointer-events-none select-none object-cover opacity-90 dark:opacity-60' />
       </div>
     </div>

@@ -1,10 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { USERS } from "@/db/dummy"
-import { cn } from "@/lib/utils"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
 import { LogOutIcon } from "lucide-react"
+import UserCard from "./UserCard"
 
 interface SidebarProps {
   isCollapsed: boolean
@@ -25,38 +23,7 @@ const Sidebar = ({ isCollapsed }: SidebarProps) => {
       <ScrollArea className="flex flex-col gap-2 px-2 group-[[data-collapsed-true]]:justify-center group-[[data-collapsed-true]]:px-2">
         {
           USERS.map(user => (
-            isCollapsed ? (
-              <TooltipProvider key={user.id}>
-                <Tooltip delayDuration={0}>
-                  <TooltipTrigger asChild>
-                    <div className="cursor-pointer">
-                      <Avatar className="my-1 flex items-center justify-center" >
-                        <AvatarImage src={user.image || '/user-placeholder.png'} alt={user.name} className="size-10 rounded-full border-2 border-white" />
-                        <AvatarFallback>
-                          {user.name[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="sr-only">{user.name}</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent side="right" className="flex items-center gap-4">
-                    {user.name}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : (
-              <Button key={user.id} variant={'grey'} size={'xl'} className={cn('w-full justify-start gap-4 my-1', selectedUser.email === user.email && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink')}>
-                <Avatar className="my-1 flex items-center justify-center" >
-                  <AvatarImage src={user.image || '/user-placeholder.png'} alt={user.name} className="size-10" referrerPolicy="no-referrer" />
-                  <AvatarFallback>
-                    {user.name[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p>{user.name}</p>
-                </div>
-              </Button>
-            )
+            <UserCard key={user.id} user={user} isCollapsed={isCollapsed} />
           ))
         }
       </ScrollArea>
