@@ -15,7 +15,6 @@ const MessageContainer = () => {
     }
 
     document.addEventListener('keydown', handleEscape)
-
     return () => {
       document.removeEventListener('keydown', handleEscape)
     }
@@ -24,7 +23,6 @@ const MessageContainer = () => {
   return (
     <div className="flex h-full w-full flex-col justify-between">
       <ChatTopBar />
-
       <div className="flex h-full w-full flex-col overflow-y-auto overflow-x-hidden">
         <ChatList />
         <ChatBottom />

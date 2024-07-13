@@ -6,8 +6,9 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 const ChatList = () => {
     const selectedUser = USERS[0]
+    
     return (
-        <ScrollArea className='flex h-full w-full flex-col overflow-y-auto overflow-x-hidden'>
+        <ScrollArea id='chat-list' className='flex h-full w-full flex-col overflow-y-auto overflow-x-hidden'>
             <AnimatePresence>
                 {
                     messages.map((message, idx) => (
@@ -26,9 +27,9 @@ const ChatList = () => {
                                     <AvatarImage src={selectedUser.image} alt={selectedUser.name} className='rounded-full border-2 border-white' />
                                 </Avatar>
                                 {
-                                    message.messageType === 'text'? (
+                                    message.messageType === 'text' ? (
                                         <span className='max-w-xs rounded-md bg-accent p-3'>{message.content}</span>
-                                    ): (
+                                    ) : (
                                         <img src={message.content} alt='message image' className='h-40 rounded border object-cover p-2 md:h-52' />
                                     )
                                 }
