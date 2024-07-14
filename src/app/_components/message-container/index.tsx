@@ -7,6 +7,7 @@ import useSelectedUser from "@/hooks/useSelectedUser"
 
 const MessageContainer = () => {
   const { setSelectedUser } = useSelectedUser()
+  
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === 'escape') {
@@ -20,6 +21,7 @@ const MessageContainer = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  
   return (
     <div className="flex h-full w-full flex-col justify-between">
       <ChatTopBar />

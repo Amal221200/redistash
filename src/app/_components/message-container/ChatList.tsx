@@ -1,4 +1,3 @@
-import { USERS } from '@/db/dummy'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -7,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import useSelectedUser from '@/hooks/useSelectedUser'
 import { getMessages } from '@/lib/actions/message'
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import { useEffect, useRef } from 'react'
+import { LegacyRef, useEffect, useRef } from 'react'
 import ChatSkeleton from '../ChatSkeleton'
 
 const ChatList = () => {
@@ -26,7 +25,7 @@ const ChatList = () => {
         }
     }, [messages])
     return (
-        <ScrollArea className='flex h-full w-full flex-col overflow-y-auto overflow-x-hidden'>
+        <div ref={chatListRef as LegacyRef<HTMLDivElement>} className='scrollbar flex h-full w-full flex-col overflow-y-auto overflow-x-hidden'>
             <AnimatePresence>
                 {
                     isChatLoading ? <ChatSkeleton /> :
@@ -57,7 +56,7 @@ const ChatList = () => {
                         ))
                 }
             </AnimatePresence>
-        </ScrollArea>
+        </div>
     )
 }
 

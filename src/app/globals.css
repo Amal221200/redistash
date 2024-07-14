@@ -69,6 +69,29 @@
   }
 }
 
+/* rounded cool looking scrollbar */
+@layer components {
+	.scrollbar::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	.scrollbar::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--muted));
+		border-radius: 6px;
+	}
+
+	.scrollbar::-webkit-scrollbar-track {
+		background-color: hsl(var(--background));
+	}
+
+  .scrollbar {
+    scrollbar-width: 6px;
+    scrollbar-track-color: hsl(var(--background));
+    scrollbar-color: hsl(var(--muted));
+  }
+}
+
 .bg-noise {
   background-image: url('/noise.svg');
 }

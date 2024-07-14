@@ -1,8 +1,8 @@
 "use server"
-
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import db from "../db"
 import { Message } from "@/db/dummy"
+import pusherConfig from '../pusher'
 
 export interface MessageArg {
     content: string,
@@ -43,7 +43,15 @@ export async function sendMessage({ content, messageType, recieverId }: MessageA
     })
 
     await db.zadd(`${conversationId}:messages`, { score: timestamp, member: JSON.stringify(messageId) })
-
+    const channelName = [senderId, recieverId].sort().join('__')
+    await pusherConfig.pusherServer.trigger(channelName, 'newMessage', {
+        message: {
+            senderId,
+            content,
+            timestamp,
+            messageType
+        }
+    })
     return { success: true }
 }
 
@@ -62,7 +70,7 @@ export async function getMessages(selectedUserId: string) {
 
     const messageIds = await db.zrange<string[]>(`${conversationId}:messages`, 0, -1)
 
-    if(messageIds.length === 0) return []
+    if (messageIds.length === 0) return []
 
     const pipeline = db.pipeline()
     messageIds.forEach(messageId => pipeline.hgetall(messageId))
