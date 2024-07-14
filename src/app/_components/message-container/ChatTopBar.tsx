@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { USERS } from '@/db/dummy'
 import useSelectedUser from '@/hooks/useSelectedUser'
 import { InfoIcon, XIcon } from 'lucide-react'
 import React from 'react'

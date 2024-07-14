@@ -1,8 +1,10 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import QueryProvider from "@/components/providers/QueryProvider";
+import { ClerkProvider } from "@clerk/nextjs"
+import AuthProvider from "@/components/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} >
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+        <ThemeProvider attribute="class" disableTransitionOnChange defaultTheme="dark">
+          <AuthProvider>
+            <QueryProvider>
+              {children}
+            </QueryProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

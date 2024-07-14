@@ -7,21 +7,21 @@ import { useCallback } from 'react'
 import { useSound } from "use-sound"
 
 const PreferencesTab = () => {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
   const { soundEnabled, setSoundEnabled } = usePreferences()
-const [playMouseClick] = useSound('/sounds/mouse-click.mp3')
-const [playSoundOn] = useSound('/sounds/sound-on.mp3')
-const [playSoundOff] = useSound('/sounds/sound-off.mp3')
-  const handleSetTheme = useCallback((theme: string) => {
-    setTheme(theme)
-    if(soundEnabled){
+  const [playMouseClick] = useSound('/sounds/mouse-click.mp3')
+  const [playSoundOn] = useSound('/sounds/sound-on.mp3')
+  const [playSoundOff] = useSound('/sounds/sound-off.mp3')
+  const handleSetTheme = useCallback((newTheme: string) => {
+    if (soundEnabled && (theme !== newTheme)) {
       playMouseClick()
     }
-  }, [setTheme, soundEnabled, playMouseClick])
+    setTheme(newTheme)
+  }, [setTheme, soundEnabled, playMouseClick, theme])
 
   const handleVolume = useCallback(() => {
     setSoundEnabled(!soundEnabled)
-    if(soundEnabled){
+    if (soundEnabled) {
       playSoundOff()
     } else {
       playSoundOn()

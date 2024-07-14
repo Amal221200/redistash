@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { User, USERS } from '@/db/dummy'
+import { User } from '@/db/dummy'
 import usePreferences from '@/hooks/usePreferences'
 import useSelectedUser from '@/hooks/useSelectedUser'
 import { cn } from '@/lib/utils'
@@ -14,11 +14,11 @@ const UserCard = ({ user, isCollapsed }: { user: User, isCollapsed: boolean }) =
     const { soundEnabled } = usePreferences()
 
     const onSelectUser = useCallback(() => {
-        if (soundEnabled) {
+        if (soundEnabled && (selectedUser?.id !== user.id)) {
             playSound()
         }
         setSelectedUser(user)
-    }, [soundEnabled, playSound, user, setSelectedUser])
+    }, [soundEnabled, playSound, user, setSelectedUser, selectedUser])
 
     return (
         isCollapsed ? (
@@ -41,7 +41,7 @@ const UserCard = ({ user, isCollapsed }: { user: User, isCollapsed: boolean }) =
                 </Tooltip>
             </TooltipProvider>
         ) : (
-            <Button variant={'grey'} size={'xl'} onClick={onSelectUser} className={cn('w-full justify-start gap-4 my-1', selectedUser?.email === user.email && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink')}>
+            <Button variant={'grey'} size={'xl'} onClick={onSelectUser} className={cn('w-full flex justify-start gap-4 my-1', selectedUser?.email === user.email && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink')}>
                 <Avatar className="my-1 flex items-center justify-center" >
                     <AvatarImage src={user.image || '/user-placeholder.png'} alt={user.name} className="size-10" referrerPolicy="no-referrer" />
                     <AvatarFallback>

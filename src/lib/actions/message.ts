@@ -1,8 +1,8 @@
 "use server"
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import db from "../db"
 import { Message } from "@/db/dummy"
 import pusherConfig from '../pusher'
+import { currentUser } from "@clerk/nextjs/server"
 
 export interface MessageArg {
     content: string,
@@ -11,13 +11,11 @@ export interface MessageArg {
 }
 
 export async function sendMessage({ content, messageType, recieverId }: MessageArg) {
-    const { getUser, isAuthenticated } = getKindeServerSession()
+    const user = await currentUser()
 
-    if (!(await isAuthenticated())) {
+    if (!user) {
         return { success: false, message: "User Not Authenticated" }
     }
-
-    const user = await getUser()
 
     const senderId = user?.id
 
@@ -56,13 +54,11 @@ export async function sendMessage({ content, messageType, recieverId }: MessageA
 }
 
 export async function getMessages(selectedUserId: string) {
-    const { getUser, isAuthenticated } = getKindeServerSession()
+    const user = await currentUser()
 
-    if (!(await isAuthenticated())) {
-        throw new Error('User not Authenticated')
+    if (!user) {
+        throw new Error("User Unauthenticated")
     }
-
-    const user = await getUser()
 
     const currentUserId = user?.id
 
@@ -73,6 +69,7 @@ export async function getMessages(selectedUserId: string) {
     if (messageIds.length === 0) return []
 
     const pipeline = db.pipeline()
+ 
     messageIds.forEach(messageId => pipeline.hgetall(messageId))
 
     const messages = await pipeline.exec<Message[]>()

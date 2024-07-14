@@ -2,14 +2,14 @@ import { cookies } from "next/headers";
 import DottedBg from "./_components/DottedBg";
 import PreferencesTab from "./_components/PreferencesTab";
 import ChatLayout from "./_components/ChatLayout";
-import { getCurrentUser } from "@/lib/actions/auth";
 import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 
 export default async function Home() {
-  const { authenticated } = await getCurrentUser()
-  
-  if (!authenticated) {
+  const { userId } = auth()
+
+  if (!userId) {
     redirect('/auth')
   }
   

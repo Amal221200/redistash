@@ -12,16 +12,16 @@ import useSelectedUser from '@/hooks/useSelectedUser'
 import UploadWidgetButton from '@/components/UploadWidgetButton'
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from '@/components/ui/dialog'
 import Image from 'next/image'
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import pusherConfig from '@/lib/pusher'
 import { Message } from '@/db/dummy'
+import { useUser } from '@clerk/nextjs'
 
 const ChatBottom = () => {
   const queryClient = useQueryClient()
   const [message, setMessage] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const { selectedUser } = useSelectedUser();
-  const { user: currentUser } = useKindeBrowserClient()
+  const { user: currentUser } = useUser()
   const [playSound1] = useSound('/sounds/keystroke1.mp3')
   const [playSound2] = useSound('/sounds/keystroke2.mp3')
   const [playSound3] = useSound('/sounds/keystroke3.mp3')
