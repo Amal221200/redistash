@@ -1,13 +1,13 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
 
-const UserSkeleton = ({ isCollapsed, count = 2 }: { isCollapsed: boolean, count?: number }) => {
+const UserSkeleton = ({ isFull, count = 2 }: { isFull: boolean, count?: number }) => {
     const arr = (new Array(count)).fill(0)
 
     return (
         <div className='flex flex-col gap-2 px-2 group-[[data-collapsed-true]]:justify-center group-[[data-collapsed-true]]:px-2'>
             {
-                isCollapsed ?
+                isFull ?
                     arr.map((_, i) => (
                         <Skeleton className='size-10 rounded-full' key={i} />
                     ))

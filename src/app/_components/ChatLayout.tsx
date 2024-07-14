@@ -14,7 +14,7 @@ const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed }: ChatLayout
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const { selectedUser } = useSelectedUser()
-    
+
     useEffect(() => {
         const chechScreenWidth = () => {
             setIsMobile(window.innerWidth <= 768)
@@ -39,7 +39,7 @@ const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed }: ChatLayout
                 setIsCollapsed(false)
                 document.cookie = `react-resizable-panels:collapsed=false;`
             }} className={cn('transition-all duration-300 ease-in-out', isCollapsed && 'min-w-[80px]')}>
-                <Sidebar isCollapsed={isCollapsed} />
+                <Sidebar isCollapsed={isCollapsed} isMobile={isMobile} />
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={defaultLayout[1]} minSize={30} >

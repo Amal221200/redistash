@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { useCallback } from 'react'
 import useSound from 'use-sound'
 
-const UserCard = ({ user, isCollapsed }: { user: User, isCollapsed: boolean }) => {
+const UserCard = ({ user, isFull }: { user: User, isFull: boolean }) => {
     const { selectedUser, setSelectedUser } = useSelectedUser()
     const [playSound] = useSound('/sounds/mouse-click.mp3')
     const { soundEnabled } = usePreferences()
@@ -21,7 +21,7 @@ const UserCard = ({ user, isCollapsed }: { user: User, isCollapsed: boolean }) =
     }, [soundEnabled, playSound, user, setSelectedUser, selectedUser])
 
     return (
-        isCollapsed ? (
+        isFull ? (
             <TooltipProvider>
                 <Tooltip delayDuration={0}>
                     <TooltipTrigger asChild>
