@@ -2,14 +2,15 @@
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import db from "../db"
+import { Message } from "@/db/dummy"
 
-export interface Message {
+export interface MessageArg {
     content: string,
     recieverId: string,
     messageType: "text" | 'image'
 }
 
-export async function sendMessage({ content, messageType, recieverId }: Message) {
+export async function sendMessage({ content, messageType, recieverId }: MessageArg) {
     const { getUser, isAuthenticated } = getKindeServerSession()
 
     if (!(await isAuthenticated())) {
@@ -44,4 +45,29 @@ export async function sendMessage({ content, messageType, recieverId }: Message)
     await db.zadd(`${conversationId}:messages`, { score: timestamp, member: JSON.stringify(messageId) })
 
     return { success: true }
+}
+
+export async function getMessages(selectedUserId: string) {
+    const { getUser, isAuthenticated } = getKindeServerSession()
+
+    if (!(await isAuthenticated())) {
+        throw new Error('User not Authenticated')
+    }
+
+    const user = await getUser()
+
+    const currentUserId = user?.id
+
+    const conversationId = `conversation:${[selectedUserId, currentUserId].sort().join(':')}`;
+
+    const messageIds = await db.zrange<string[]>(`${conversationId}:messages`, 0, -1)
+
+    if(messageIds.length === 0) return []
+
+    const pipeline = db.pipeline()
+    messageIds.forEach(messageId => pipeline.hgetall(messageId))
+
+    const messages = await pipeline.exec<Message[]>()
+
+    return messages
 }

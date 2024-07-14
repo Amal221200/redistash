@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import useSound from 'use-sound'
 import usePreferences from '@/hooks/usePreferences'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Message, sendMessage } from '@/lib/actions/message'
+import { MessageArg, sendMessage } from '@/lib/actions/message'
 import useSelectedUser from '@/hooks/useSelectedUser'
 
 const ChatBottom = () => {
@@ -25,9 +25,9 @@ const ChatBottom = () => {
 
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ['send_message', selectedUser?.id],
-    mutationFn: async (message: Message) => await sendMessage(message),
+    mutationFn: async (message: MessageArg) => await sendMessage(message),
     async onSuccess(data, variables, context) {
-        await queryClient.invalidateQueries({queryKey: ['get_message', selectedUser?.id]})
+        await queryClient.invalidateQueries({queryKey: ['get_messages', selectedUser?.id]})
     },
   })
 
