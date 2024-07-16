@@ -10,8 +10,9 @@ interface ChatLayoutProps {
     defaultLayout: number[] | undefined,
     defaultCollapsed: boolean | undefined,
 }
-const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed }: ChatLayoutProps) => {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+
+const ChatLayout = ({ defaultLayout = [320, 480], defaultCollapsed = false }: ChatLayoutProps) => {
+    const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
     const [isMobile, setIsMobile] = useState(false);
     const { selectedUser } = useSelectedUser()
 
